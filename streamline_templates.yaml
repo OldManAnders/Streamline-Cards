@@ -1,0 +1,2 @@
+homelab_node: !include templates/homelab_node.yaml
+homelab_service: !include templates/homelab_service.yaml

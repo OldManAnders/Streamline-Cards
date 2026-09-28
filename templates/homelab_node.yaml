@@ -1,0 +1,95 @@
+# Template: homelab_node
+card:
+  type: custom:mod-card
+  grid_options:
+    rows: auto
+  style: |
+    ha-card {
+      background: var(--ha-card-background);
+      border-radius: 8px;
+      box-shadow: var(--ha-card-box-shadow);
+    }
+  card:
+    type: vertical-stack
+    cards:
+      - type: heading
+        icon: "[[icon]]"
+        heading: "[[name]]"
+        tap_action:
+          action: url
+          url_path: "[[url]]"
+        card_mod:
+          style: |
+            :host {
+              opacity: {% if is_state('[[status_entity]]', 'on') %} 1 {% else %} 0.4 {% endif %};
+              transition: opacity 0.3s ease;
+            }
+            .title {
+              font-size: 24px !important;
+            }
+            ha-icon {
+              --mdc-icon-size: 28px;
+              color: {% if is_state('[[status_entity]]', 'on') %} #5CE65C {% else %} grey {% endif %} !important;
+            }
+        badges:
+          - type: custom:mushroom-template-badge
+            entity: "[[cpu_entity]]"
+            icon: mdi:chip
+            color: |-
+              {% if is_state('[[status_entity]]', 'off') %}
+                grey
+              {% else %}
+                {% set sns = states('[[cpu_entity]]') | float(0) %}
+                {% if sns <= 50 %} 
+                  #5CE65C
+                {% elif sns <= 70 %} 
+                  #FFEF00
+                {% elif sns <= 80 %} 
+                  orange
+                {% elif sns <= 100 %} 
+                  #FA5053
+                {% else %} 
+                  grey
+                {% endif %}
+              {% endif %}
+          - type: custom:mushroom-template-badge
+            entity: "[[ram_entity]]"
+            icon: mdi:memory
+            color: |-
+              {% if is_state('[[status_entity]]', 'off') %}
+                grey
+              {% else %}
+                {% set sns = states('[[ram_entity]]') | float(0) %}
+                {% if sns <= 50 %} 
+                  #5CE65C
+                {% elif sns <= 70 %} 
+                  #FFEF00
+                {% elif sns <= 80 %} 
+                  orange
+                {% elif sns <= 100 %} 
+                  #FA5053
+                {% else %} 
+                  grey
+                {% endif %}
+              {% endif %}
+          - type: custom:mushroom-template-badge
+            entity: "[[disk_entity]]"
+            icon: mdi:harddisk
+            color: |-
+              {% if is_state('[[status_entity]]', 'off') %}
+                grey
+              {% else %}
+                {% set sns = states('[[disk_entity]]') | float(0) %}
+                {% if sns <= 50 %} 
+                  #5CE65C
+                {% elif sns <= 70 %} 
+                  #FFEF00
+                {% elif sns <= 80 %} 
+                  orange
+                {% elif sns <= 100 %} 
+                  #FA5053
+                {% else %} 
+                  grey
+                {% endif %}
+              {% endif %}
+
